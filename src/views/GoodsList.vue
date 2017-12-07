@@ -78,8 +78,8 @@
     methods:{
       getGoodsList(){
         axios.get("/goods").then((result) => {
-          console.log(result);
-          this.goodsList = result.data.result
+          var res = result.data
+          this.goodsList = res.result
         })
       }
     }
