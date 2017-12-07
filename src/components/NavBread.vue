@@ -23,82 +23,45 @@
 </script>
 
 <style>
-  .header {
-    width: 100%;
-    background-color: white;
-    font-family: "moderat",sans-serif;
-    font-size: 16px;
-  }
-
-  .goods-svg {
-    position: absolute;
-    width: 0;
-    height: 0;
-    overflow: hidden;
-  }
-  .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-content: center;
-    width: 100%;
-    height: 70px;
+  /** the page max width **/
+  .container {
     max-width: 1280px;
     margin: 0 auto;
-    padding: 5px 20px 10px 20px;
+    padding: 0 10px;
   }
-  .navbar-left-container {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    margin-left: -20px;
+
+  .nav-breadcrumb-wrap {
+    background: #f0f0f0;
   }
-  .header a, .footer a {
-    color: #666;
-    text-decoration: none;
+
+
+  /** 面包屑 **/
+  .nav-breadcrumb {
+    padding: 10px 0;
+    line-height: 25px;
+    font-size: 14px;
   }
-  .navbar-brand-logo {
-    /*width: 120px;*/
-    margin-top: 10px;
-  }
-  a {
-    -webkit-transition: color .3s ease-out;
-    transition: color .3s ease-out;
-  }
-  .navbar-right-container {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-  }
-  .navbar-menu-container {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    padding-top: 10px;
-  }
-  .navbar-link {
-    padding-left: 15px;
-  }
-  .navbar-cart-container {
+
+  .nav-breadcrumb a {
     position: relative;
+    margin-right: 16px;
+    color: #999;
   }
-  .navbar-cart-count {
-    justify-content: center;
-    align-items: center;
+
+  .nav-breadcrumb a:after {
     position: absolute;
-    top: -9px;
-    right: -11px;
-    width: 20px;
-    border-radius: 10px;
-    color: white;
-    background-color: #eb767d;
-    font-size: 16px;
-    font-weight: bold;
-    text-align: center;
+    top: 3px;
+    right: -12px;
+    content: "/";
+    line-height: 1.2;
   }
-  .navbar-cart-logo {
-    width: 25px;
-    height: 25px;
-    transform: scaleX(-1);
+
+  .nav-breadcrumb a:hover {
+    color: #d1434a;
+  }
+
+  .nav-breadcrumb span {
+    color: #d1434a;
   }
 
 </style>
