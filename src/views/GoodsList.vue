@@ -59,6 +59,7 @@
   import NavHeader from './../components/NavHeader.vue'
   import NavFooter from './../components/NavFooter.vue'
   import NavBread from './../components/NavBread.vue'
+  import axios from 'axios'
   export default {
 //    name: 'HelloWorld',
     data () {
@@ -128,14 +129,14 @@
       }
     },
     mounted(){
-      this.getGoodsList()
+      this.getGoodsList();
     },
     components:{
       NavHeader,
       NavFooter,
       NavBread
     },
-    method:{
+    methods:{
       getGoodsList(){
         axios.get("/goods").then((result) => {
           console.log(result)
