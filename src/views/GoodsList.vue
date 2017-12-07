@@ -127,10 +127,20 @@
         ]
       }
     },
+    mounted(){
+      this.getGoodsList()
+    },
     components:{
       NavHeader,
       NavFooter,
       NavBread
+    },
+    method:{
+      getGoodsList(){
+        axios.get("/goods").then((result) => {
+          console.log(result)
+        })
+      }
     }
   }
 </script>
