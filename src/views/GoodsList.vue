@@ -121,7 +121,8 @@
         var param = {
           page: this.page,
           pageSize: this.pageSize,
-          sort: this.sortFlag?1:-1
+          sort: this.sortFlag?1:-1,
+          priceLevel: this.priceChecked
         };
         this.loading = true;
 
@@ -158,6 +159,8 @@
       },
       setPriceFilter(index){
         this.priceChecked = index;
+        this.page = 1;
+        this.getGoodsList();
       },
       loadMore(){
         this.busy = true;
