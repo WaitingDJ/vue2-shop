@@ -10,8 +10,8 @@ const portfinder = require('portfinder')
 
 const axios = require('axios')
 const express = require('express')
-const apiRoutes = express.Router()
-const goodsData = require('./../mock/goods.json')
+/*const apiRoutes = express.Router()
+const goodsData = require('./../mock/goods.json')*/
 
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
@@ -40,12 +40,14 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     quiet: true, // necessary for FriendlyErrorsPlugin
     watchOptions: {
       poll: config.dev.poll,
-    },
+    }
+
+/*    ,
     before(apiRoutes){
       apiRoutes.get('/goods', (req,res) => {
         res.json(goodsData)
       })
-    }
+    }*/
 
 
 
