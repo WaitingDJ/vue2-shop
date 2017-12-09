@@ -41,6 +41,12 @@
                 </li>
               </ul>
             </div>
+            <div class="view-more-normal"
+                 v-infinite-scroll="loadMore"
+                 infinite-scroll-disable="busy"
+                 infinite-scroll-distance="20">
+              <img src="./../../static/loading-svg/loading-spinning-bubbles.svg" v-show="loading">
+            </div>
           </div>
         </div>
       </div>
@@ -69,6 +75,8 @@
         page: 1,
         pageSize: 8,
         sortFlag: true,
+        busy: true,
+        loading: false,
         priceFilter: [
           {
             startPrice:'0.00',
@@ -109,18 +117,33 @@
       NavBread
     },
     methods:{
-      getGoodsList(){
+      getGoodsList(flag){
         var param = {
           page: this.page,
           pageSize: this.pageSize,
           sort: this.sortFlag?1:-1
-        }
+        };
+        this.loading = true;
 
-        axios.get("/goods",{
-          params: param
-        }).then((result) => {
-          var res = result.data.result
-          this.goodsList = res.list
+        axios.get("/goods",{params: param})
+          .then((result) => {
+            var res = result.data;
+            this.loading = false;
+            if(res.status == "0"){
+              if(flag){
+                this.goodsList = this.goodsList.concat(res.result.list);
+                if(res.result.count == 0){
+                  this.busy = true;
+                }else{
+                  this.busy = false;
+                }
+              }else{
+                this.goodsList = res.result.list;
+                this.busy = false;
+              }
+            }else{
+              this.goodsList = [];
+            }
         })
       },
       defaultSort(){
@@ -135,6 +158,13 @@
       },
       setPriceFilter(index){
         this.priceChecked = index;
+      },
+      loadMore(){
+        this.busy = true;
+        setTimeout(() => {
+          this.page++;
+          this.getGoodsList(true);
+        },500)
       },
       showFilterPop(){
         this.filterBy = true;
