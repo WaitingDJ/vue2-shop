@@ -38,6 +38,24 @@ app.all('*', function (req,res,next) {
 });
 */
 
+app.use(function (req, res, next) {
+  if(req.cookie.userId){
+    next();
+  }else{
+    console.log("url:" + req.originalUrl);
+    if(req.originalUrl == '/users/login' || req.originalUrl == '/users/logout'){
+      next();
+    }else{
+      res.json({
+        status:'10001',
+        msg: '当前未登录',
+        result: ''
+      });
+    }
+  }
+});
+
+
 
 app.use('/', index);
 app.use('/goods', goods);
