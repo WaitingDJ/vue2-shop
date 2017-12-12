@@ -95,7 +95,7 @@
                 nickName: ''
             }
         },
-      method:{
+      methods:{
         logIn(){
           if(!this.userName || !this.userPwd){
             this.errorTip = true;
