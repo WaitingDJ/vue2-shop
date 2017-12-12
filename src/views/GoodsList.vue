@@ -126,7 +126,7 @@
         };
         this.loading = true;
 
-        axios.get("/goods",{params: param})
+        axios.get("/goods/list",{params: param})
           .then((result) => {
             var res = result.data;
             this.loading = false;
