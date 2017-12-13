@@ -65,12 +65,12 @@
                   </li>
                   <li class="regi_form_input noMargin">
                     <i class="icon IconPwd"></i>
-                    <input type="password" tabindex="2"  name="password" v-model="userPwd" class="regi_login_input regi_login_input_left login-input-no input_text" placeholder="密码" @keyup.enter="logIn">
+                    <input type="password" tabindex="2"  name="password" v-model="userPwd" class="regi_login_input regi_login_input_left login-input-no input_text" placeholder="密码" @keyup.enter="login">
                   </li>
                 </ul>
               </div>
               <div class="login-wrap">
-                <a href="javascript:;" class="btn-login" @click="logIn">登  录</a>
+                <a href="javascript:;" class="btn-login" @click="login">登  录</a>
               </div>
             </div>
           </div>
@@ -82,63 +82,63 @@
 </template>
 
 <script>
-    import './../assets/css/login.css'
-    import axios from 'axios'
-    export default {
-//      name:'NavHeader',
-        data () {
-            return {
-                userName: 'admin',
-                userPwd: '123456',
-                errorTip: false,
-                loginModalFlag: false,
-                nickName: ''
-            }
-        },
-      mounted(){
-        this.checkLogin();
-        console.log('1234');
-      },
-      methods:{
-        checkLogin(){
-            axios.get("/users/checkLogin").then((response)=>{
-              var res = response.data;
-            if(res.status=="0"){
-              this.nickName = res.result;
-              this.loginModalFlag = false;
-            }else{
+  import './../assets/css/login.css'
+  import axios from 'axios'
 
-            }
-          });
-        },
-        logIn(){
-          if(!this.userName || !this.userPwd){
-            this.errorTip = true;
-            return;
+  export default {
+//        name: 'NavHeader_Song',
+        data() {
+          return{
+            userName:'admin',
+            userPwd:'123456',
+            errorTip:false,
+            loginModalFlag:false,
+            nickName:''
           }
-          axios.post("/users/login", {
-            userName: this.userName,
-            userPwd: this.userPwd
-          }).then((response) => {
-            let res = response.data;
-            if(res.status == "0"){
-              this.errorTip = false;
-              this.loginModalFlag = false;
-              this.nickName = res.result.userName;
-            }else{
-              this.errorTip = true;
-            }
-          })
         },
-        logOut(){
-          axios.post("/users/logout").then((response) => {
-            let res = response.data;
-            if(res.status == "0"){
-              this.nickName = '';
-            }
-          })
+    mounted(){
+      this.checkLogin();
+    },
+    methods: {
+      checkLogin(){
+        axios.get("/users/checkLogin").then((response)=>{
+          var res = response.data;
+          if(res.status=="0"){
+            this.nickName = res.result;
+            this.loginModalFlag = false;
+          }else{
+
+          }
+        });
+      },
+      login(){
+        if(!this.userName || !this.userPwd){
+          this.errorTip = true;
+          return;
         }
+        axios.post("/users/login",{
+          userName:this.userName,
+          userPwd:this.userPwd
+        }).then((response)=>{
+          let res = response.data;
+          if(res.status=="0"){
+            this.errorTip = false;
+            this.loginModalFlag = false;
+            this.nickName = res.result.userName;
+          }else{
+            this.errorTip = true;
+          }
+        });
+            },
+            logOut(){
+                axios.post("/users/logout").then((response)=>{
+                    let res = response.data;
+                    if(res.status=="0"){
+                        this.nickName = '';
+                    }
+                })
       }
+    }
     }
 </script>
 <style>
