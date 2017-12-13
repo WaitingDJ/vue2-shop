@@ -97,18 +97,19 @@
         },
       mounted(){
         this.checkLogin();
+        console.log('1234');
       },
       methods:{
         checkLogin(){
-          axios.get("/users/checkLogin").then((response) => {
-            var res = response.data;
-            if(res.status == "0"){
-              this.nickName = res.nickName;
+            axios.get("/users/checkLogin").then((response)=>{
+              var res = response.data;
+            if(res.status=="0"){
+              this.nickName = res.result;
               this.loginModalFlag = false;
             }else{
 
             }
-          })
+          });
         },
         logIn(){
           if(!this.userName || !this.userPwd){

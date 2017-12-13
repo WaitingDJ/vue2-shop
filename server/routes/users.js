@@ -18,12 +18,12 @@ router.post('/login', function (req, res, next) {
       if(doc){
         res.cookie("userId", doc.userId,{
           path: "/",
-          maxAge: 1000*60*30
+          maxAge: 1000*60*60
         });
 
         res.cookie("userName", doc.userName,{
           path: "/",
-          maxAge: 1000*60*30
+          maxAge: 1000*60*60
         });
 
         res.json({
@@ -57,7 +57,7 @@ router.get("/checkLogin", function (req, res, next) {
     res.json({
       status: "0",
       msg: "",
-      result:req.cookies.userName || ""
+      result:req.cookies.userName || ''
     })
   }else{
     res.json({
