@@ -51,6 +51,28 @@
         </div>
       </div>
     </div>
+
+    <modal v-bind:mdShow="mdShow" v-on:close="closeModal">
+      <p slot="message">
+        请先登录,否则无法加入到购物车中!
+      </p>
+      <div slot="btnGroup">
+        <a class="btn btn--m" href="javascript:void(0);" @click="mdShow = false">关闭</a>
+      </div>
+    </modal>
+    <modal v-bind:mdShow="mdShowCart" v-on:close="closeModal">
+      <p slot="message">
+        <svg class="icon-status-ok">
+          <use xmlns:xlink="http://www.w3.org/1999/xhtml" xlink:href="#icon-status-ok"></use>
+        </svg>
+        <span>成功加入购物车！</span>
+      </p>
+      <div slot="btnGroup">
+        <a class="btn btn--m" href="javascript:void(0);" @click="mdShowCart = false">继续购物</a>
+        <router-link class="btn btn--m btn--red" href="javascript:;" to="/cart">查看购物车</router-link>
+      </div>
+    </modal>
+
     <div class="md-overlay" v-show="overLayFlag" @click="closePop"></div>
     <nav-footer></nav-footer>
     </body>
@@ -66,6 +88,7 @@
   import NavHeader from './../components/NavHeader.vue'
   import NavFooter from './../components/NavFooter.vue'
   import NavBread from './../components/NavBread.vue'
+  import Modal from './../components/Modal.vue'
   import axios from 'axios'
   export default {
 //    name: 'HelloWorld',
@@ -77,6 +100,8 @@
         sortFlag: true,
         busy: true,
         loading: false,
+        mdShow: false,
+        mdShowCart: false,
         priceFilter: [
           {
             startPrice:'0.00',
@@ -114,7 +139,8 @@
     components:{
       NavHeader,
       NavFooter,
-      NavBread
+      NavBread,
+      Modal
     },
     methods:{
       getGoodsList(flag){
@@ -175,9 +201,9 @@
         }).then((res) => {
           var res = res.data;
           if(res.status == 0){
-            alert("成功加入购物车")
+            this.mdShowCart = true;
           }else{
-            alert("Error msg:" + res.msg);
+            this.mdShow = true;
           }
         })
       },
@@ -185,9 +211,15 @@
         this.filterBy = true;
         this.overLayFlag = true;
       },
+      closeModal(){
+        this.mdShow = false;
+        this.mdShowCart = false;
+      },
       closePop(){
         this.filterBy = false;
         this.overLayFlag = false;
+        this.mdShow = false;
+        this.mdShowCart = false;
       }
     }
   }
