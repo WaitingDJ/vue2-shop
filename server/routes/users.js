@@ -50,4 +50,23 @@ router.post('/logout', function (req, res, next) {
     result:''
   })
 });
+
+//检查登录状态cookies
+router.get("/checkLogin", function (req, res, next) {
+  if(req.cookies.UserId){
+    res.json({
+      status: "0",
+      msg: "",
+      result:req.cookies.userName || ""
+    })
+  }else{
+    res.json({
+      status: "1",
+      msg: "未登录",
+      result: ""
+    });
+  }
+});
+
+
 module.exports = router;

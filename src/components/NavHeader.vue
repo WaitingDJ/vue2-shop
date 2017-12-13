@@ -95,7 +95,21 @@
                 nickName: ''
             }
         },
+      mounted(){
+        this.checkLogin();
+      },
       methods:{
+        checkLogin(){
+          axios.get("/users/checkLogin").then((response) => {
+            var res = response.data;
+            if(res.status == "0"){
+              this.nickName = res.nickName;
+              this.loginModalFlag = false;
+            }else{
+
+            }
+          })
+        },
         logIn(){
           if(!this.userName || !this.userPwd){
             this.errorTip = true;
