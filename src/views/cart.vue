@@ -62,7 +62,7 @@
               <li v-for="item in cartList">
                 <div class="cart-tab-1">
                   <div class="cart-item-check">
-                    <a href="javascipt:;" class="checkbox-btn item-check-btn" v-bind:class="{'check':item.checked=='1'}">
+                    <a href="javascipt:;" class="checkbox-btn item-check-btn" v-bind:class="{'check':item.checked=='1'}" @click="editCart('checked', item)">
                       <svg class="icon icon-ok">
                         <use xlink:href="#icon-ok"></use>
                       </svg>
@@ -129,6 +129,13 @@
         </div>
       </div>
     </div>
+    <Modal :mdShow="modalConfirm" @close="closeModal">
+      <p slot="message">你确认要删除此条数据吗?</p>
+      <div slot="btnGroup">
+        <a class="btn btn--m" href="javascript:;" @click="delCart">确认</a>
+        <a class="btn btn--m btn--red" href="javascript:;" @click="modalConfirm = false">关闭</a>
+      </div>
+    </Modal>
     <nav-footer></nav-footer>
   </div>
 </template>
@@ -145,7 +152,9 @@
   export default {
     data() {
       return {
-        cartList:[]
+        cartList:[],
+        delItem: {},
+        modalConfirm: false
       }
     },
     mounted(){
@@ -173,6 +182,48 @@
         axios.get("/users/cartList").then((response)=>{
           let res = response.data;
         this.cartList = res.result;
+      })
+      },
+      closeModal(){
+        this.modalConfirm = false;
+      },
+      delCartConfirm(item){
+        this.delItem = item;
+        this.modalConfirm = true;
+      },
+      delCart(){
+        axios.post("/users/cartDel", {
+          productId: this.delItem.productId
+        }).then((response) => {
+          let res = response.data;
+          if(res.status == "0"){
+            this.modalConfirm = false;
+            var delCount = this.delItem.productNum;
+            this.init();
+          }
+        })
+      },
+      editCart(flag, item){
+        if(flag=='add'){
+          item.productNum++;
+        }else if(flag=='minu'){
+          if(item.productNum<=1){
+            return;
+          }
+          item.productNum--;
+        }else{
+          item.checked = item.checked=="1"?'0':'1';
+        }
+
+        axios.post("/users/cartEdit",{
+          productId:item.productId,
+          productNum:item.productNum,
+          checked:item.checked
+        }).then((response)=>{
+          let res = response.data;
+        if(res.status=='0'){
+          console.log("update success");
+        }
       })
       }
     }
