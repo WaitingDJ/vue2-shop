@@ -28,6 +28,11 @@ export default new Router({
       path: '/Address',
       name: 'Address',
       component: Address
+    },
+    {
+      path: '/OrderConfirm',
+      name: 'OrderConfirm',
+      component: OrderConfirm
     }
   ]
 })
