@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var User = require('./../models/user');
+require('./../util/util');
 
 //登录接口
 router.post("/login", function (req, res, next) {

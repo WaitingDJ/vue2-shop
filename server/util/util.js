@@ -15,17 +15,3 @@ Date.prototype.Format = function (fmt) {
 }
 
 module.exports = {};
-
-vue2-shop-lesson\src\views\OrderConfirm.vue
-payMent(){
-  var addressId = this.$route.query.addressId;
-  axios.post("/users/payMent",{
-    addressId:addressId,
-    orderTotal:this.orderTotal
-  }).then((response)=>{
-    let res = response.data;
-    if(res.status=="0"){
-      alert('成功')
-    }
-  })
-}
