@@ -178,6 +178,201 @@ router.post("/editCheckAll", function (req, res, next) {
       }
     }
   })
-})
+});
+
+//查询用户地址接口
+router.get("/addressList", function (req,res,next) {
+  var userId = req.cookies.userId;
+  User.findOne({userId:userId}, function (err,doc) {
+    if(err){
+      res.json({
+        status:'1',
+        msg:err.message,
+        result:''
+      });
+    }else{
+      res.json({
+        status:'0',
+        msg:'',
+        result:doc.addressList
+      });
+    }
+  })
+});
+
+//设置默认地址接口
+router.post("/setDefault", function (req,res,next) {
+  var userId = req.cookies.userId,
+    addressId = req.body.addressId;
+  if(!addressId){
+    res.json({
+      status:'1003',
+      msg:'addressId is null',
+      result:''
+    });
+  }else{
+    User.findOne({userId:userId}, function (err,doc) {
+      if(err){
+        res.json({
+          status:'1',
+          msg:err.message,
+          result:''
+        });
+      }else{
+        var addressList = doc.addressList;
+        addressList.forEach((item)=>{
+          if(item.addressId ==addressId){
+            item.isDefault = true;
+          }else{
+            item.isDefault = false;
+          }
+        });
+
+        doc.save(function (err1,doc1) {
+          if(err){
+            res.json({
+              status:'1',
+              msg:err.message,
+              result:''
+            });
+          }else{
+            res.json({
+              status:'0',
+              msg:'',
+              result:''
+            });
+          }
+        })
+      }
+    });
+  }
+});
+
+//删除地址接口
+router.post("/delAddress", function (req,res,next) {
+  var userId = req.cookies.userId,addressId = req.body.addressId;
+
+  User.findOne({userId:userId}, function (err,doc) {
+    if(err){
+      res.json({
+        status:'1',
+        msg:err.message,
+        result:''
+      });
+    }else{
+      if(doc.addressList.length > 1){
+        User.update({
+          userId:userId
+        },{
+          $pull:{
+            'addressList':{
+              'addressId':addressId
+            }
+          }
+        }, function (err,doc) {
+          if(err){
+            res.json({
+              status:'1',
+              msg:err.message,
+              result:''
+            });
+          }else{
+            res.json({
+              status:'0',
+              msg:'',
+              result:''
+            });
+          }
+        });
+      } else {
+        res.json({
+          status:'1',
+          msg:'至少保留一条收货地址！',
+          result:''
+        });
+      }
+    }
+  })
+});
+
+//增加地址接口
+/*router.post('/addAddress', function (req, res, next) {
+  var userId = req.cookies.userId;
+  var streeName = req.body.streeName;
+  var postCode = req.body.postCode;
+  var tel = req.body.tel;
+  var isDefault = req.body.isDefault;
+  var User = require('./../models/user');
+  User.findOne({userId: userId}, function (err, userDoc) {
+    if(err){
+      res.json({
+        status: "1",
+        msg: err.message
+      })
+    }else{
+      // console.log("userDoc: "+userDoc);
+      if(userDoc){
+        var userAddress = '';
+        userDoc.addressList.forEach(function (item) {
+          if(item.addressList == addressList){
+            res.json({
+              status: "0",
+              msg: '',
+              result: '该地址已存在'
+            })
+          }
+        });
+        if(goodsItem){
+          userDoc.save(function (err2, doc2) {
+            if(err2){
+              res.json({
+                status: "1",
+                msg: err2.message
+              })
+            }else{
+              res.json({
+                status: "0",
+                msg: "",
+                result: 'suc'
+              })
+            }
+          })
+        }else{
+          User.findOne({userId:userId}, function (err1, doc) {
+            if(err1){
+              res.json({
+                status: "1",
+                msg: err1.message
+              })
+            }else{
+              if(doc){
+                doc.streeName = streeName;
+                doc.postCode = postCode;
+                doc.tel = tel;
+                doc.isDefault = true;
+                userDoc.cartList.push(doc);
+                userDoc.save(function (err2, doc2) {
+                  if(err2){
+                    res.json({
+                      status: "1",
+                      msg: err2.message
+                    })
+                  }else{
+                    res.json({
+                      status: "0",
+                      msg: '',
+                      result: "suc"
+                    })
+                  }
+                })
+              }
+            }
+          })
+
+        }
+      }
+    }
+  })
+});*/
 
 module.exports = router;
